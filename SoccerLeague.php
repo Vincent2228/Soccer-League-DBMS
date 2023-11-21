@@ -30,10 +30,10 @@
         }
         
         $query = 'SELECT stadium_name, team_name, wins, losses
-FROM large_stadium, home_to, team
-WHERE large_stadium.stadium_id = home_to.stadium_id AND home_to.team_id = team.team_id
-ORDER BY stadium_name ASC;
-';
+                    FROM large_stadium, home_to, team
+                    WHERE large_stadium.stadium_id = home_to.stadium_id AND home_to.team_id = team.team_id
+                    ORDER BY stadium_name ASC;';
+                    
         $stid = oci_parse($conn, $query);
         if (!$stid) {
             $e = oci_error($conn);
