@@ -1,3 +1,5 @@
+const fileSystem = require('fs');
+
 function randomJoinDateGenerator() {
     const day = Math.floor(Math.random() * 28) + 1;
     const month = Math.floor(Math.random() * 12) + 1;
@@ -21,12 +23,12 @@ class Player {
         this.playerID = Player.totalNumberOfPlayers + 1;
         this.playerName = playerName;
         this.dob = dob;
-        this.team = null;
+        this.teamID = null;
         this.teamJoinDate = null;
         Player.totalNumberOfPlayers++;
     }    
     setTeam(TeamInstance) {
-        this.team = TeamInstance;
+        this.teamID = TeamInstance.teamID;
     }
 }
 
@@ -60,12 +62,12 @@ class Manager {
     constructor(managerName){
         this.managerID = Manager.totalNumberOfManagers + 1;
         this.managerName = managerName;        
-        this.team = null;
+        this.teamID = null;
         this.teamJoinDate = null;
         Manager.totalNumberOfManagers++;
     }
     setTeam(TeamInstance) {
-        this.team = TeamInstance;
+        this.teamID = TeamInstance.teamID;
     }
 }
 
@@ -75,11 +77,11 @@ class Stadium {
         this.stadiumID = Stadium.totalNumberOfStadiums + 1;
         this.stadiumName = stadiumName;
         this.capacity = capacity;
-        this.team = null;
+        this.homeTeamID = null;
         Stadium.totalNumberOfStadiums++;
     }
     setTeam(TeamInstance) {
-        this.team = TeamInstance;
+        this.homeTeamID = TeamInstance.teamID;
     }
 }
 
@@ -87,10 +89,10 @@ class Goal{
     static totalNumberOfGoals = 0;
     constructor(player, time, type, match){
         this.goalID = Goal.totalNumberOfGoals + 1;
-        this.player = player;
-        this.time = time;
-        this.match = match;
-        this.type = type;
+        this.scoringPlayerID = player.playerID;
+        this.goalTime = time;
+        this.matchID = match.matchID;
+        this.goalType = type;
         Goal.totalNumberOfGoals++;
     }
 }
@@ -99,25 +101,29 @@ class Match{
     static totalNumberOfMatches = 0;
     constructor(team1, team2, stadium){
         this.matchID = Match.totalNumberOfMatches + 1;        
-        this.stadium = stadium;
+        this.stadiumID = stadium.stadiumID;
         this.team1 = team1;
         this.team2 = team2;
         this.Goals = [];
         this.attendance = null;
         this.team1Score = null;
         this.team2Score = null;
-        this.winner = null;
-        this.loser = null;
+        this.winnerID = null;        
+        this.loserID = null;
+        // this.winnerID = null;
+        // this.loserID = null;
         Match.totalNumberOfMatches++;
     }
     setAttendance(attendance){
         this.attendance = attendance;
     }
-    setWinner(winner){
-        this.winner = winner;
+    setWinner(winnerTeamInstance){
+        this.winnerID = winnerTeamInstance.teamID;
+        //this.winnerID = winner.teamID;
     }
-    setLoser(loser){
-        this.loser = loser;
+    setLoser(loserTeamInstance){
+        this.loserID = loserTeamInstance.teamID;
+        //this.loserID = loser.teamID;
     }
     setTeam1Score(team1Score){
         this.team1Score = team1Score;
@@ -153,10 +159,10 @@ managersDataArr.forEach(manager => {
 });
 //console.log(ManagerArray.length);
 
-TeamArray.forEach(team => {
-    assignedManager = ManagerArray[team.teamID-1];
-    team.setManager(assignedManager);
-    assignedManager.setTeam(team); 
+TeamArray.forEach(TeamInstance => {
+    assignedManager = ManagerArray[TeamInstance.teamID-1];
+    TeamInstance.setManager(assignedManager);
+    assignedManager.setTeam(TeamInstance); 
     assignedManager.teamJoinDate = randomJoinDateGenerator();
     
     /*mapping which teams get which players.
@@ -166,12 +172,12 @@ TeamArray.forEach(team => {
         i = 2*teamID-1 = 2*(2)-1 = 3
         j = i+1 = 4
     */
-    let i = 2*team.teamID-1, j = i+1;
+    let i = 2*TeamInstance.teamID-1, j = i+1;
 
-    team.addPlayer(PlayerArray[i-1]); //i-1 because array index starts at 0
-    team.addPlayer(PlayerArray[j-1]);
-    PlayerArray[i-1].setTeam(team);
-    PlayerArray[j-1].setTeam(team);
+    TeamInstance.addPlayer(PlayerArray[i-1]); //i-1 because array index starts at 0
+    TeamInstance.addPlayer(PlayerArray[j-1]);
+    PlayerArray[i-1].setTeam(TeamInstance);
+    PlayerArray[j-1].setTeam(TeamInstance);
     PlayerArray[i-1].teamJoinDate = randomJoinDateGenerator();
     PlayerArray[j-1].teamJoinDate = randomJoinDateGenerator();
 });
@@ -193,15 +199,22 @@ StadiumArray.forEach(stadium => {
 function simulateMatch(team1, team2, stadium){
     let match = new Match(team1, team2, stadium);
     match.setAttendance(Math.floor(Math.random() * stadium.capacity) + 1);
-    
-    //team1 score and generate Goal instances
-    match.setTeam1Score(Math.floor(Math.random() * 6));
+
+    //insure no draws
+    let team1Score = 0;
+    let team2Score = 0;
+    while (team1Score == team2Score){
+        team1Score = Math.floor(Math.random() * 6);
+        team2Score = Math.floor(Math.random() * 6);
+    }
+    match.setTeam1Score(team1Score);
+    match.setTeam2Score(team2Score);
+
+    //generate goals for each team
     for (let i = 0; i < match.team1Score; i++){
         let goal = new Goal(team1.players[Math.floor(Math.random() * team1.players.length)], Math.floor(Math.random() * 90) + 1, randomGoalTypeGenerator(), match);
         match.addGoal(goal);
     }
-
-    match.setTeam2Score(Math.floor(Math.random() * 6));
     for (let i = 0; i < match.team2Score; i++){
         let goal = new Goal(team2.players[Math.floor(Math.random() * team2.players.length)], Math.floor(Math.random() * 90) + 1, randomGoalTypeGenerator(), match);
         match.addGoal(goal);
@@ -212,14 +225,11 @@ function simulateMatch(team1, team2, stadium){
         match.setLoser(team2);
         team1.addWin();
         team2.addLoss();
-    } else if (match.team1Score < match.team2Score){
+    } else {
         match.setWinner(team2);
         match.setLoser(team1);
         team2.addWin();
         team1.addLoss();
-    } else {
-        match.setWinner(null);
-        match.setLoser(null);
     }
     return match;
 }
@@ -248,6 +258,88 @@ function simulate_n_matches(n){
     }
 }
 
-simulate_n_matches(3);
+simulate_n_matches(50);
+// console.dir(MatchArray, { depth: 3 });
+// console.log(GoalArray)
 
-console.dir(MatchArray, { depth: 3 });
+// mapping to SQL Insertion Code
+/**
+ * team:    INSERT INTO team VALUES (teamID, teamName, wins, losses)
+ * player:  INSERT INTO player VALUES (playerID, playerName, dob, teamID, teamJoinDate)
+ * manager: INSERT INTO manager VALUES (managerID, managerName, teamID, teamJoinDate)
+ * stadium: INSERT INTO stadium VALUES (stadiumID, capacity, stadiumName, homeTeamID)
+ * match:   INSERT INTO match VALUES (matchID, team1Score, team2Score, attendance, stadiumID, winnerID, loserID)
+ * goal:    INSERT INTO goal VALUES (goalID, goalType, goalTime, scoringPlayerID, matchID)
+ */
+
+// SQL Insertion Code
+function allTeamInsertionCode(){
+    let teamInsertionCode = "";
+    TeamArray.forEach(TeamInstance => {
+        teamInsertionCode += `INSERT INTO team VALUES (${TeamInstance.teamID}, "${TeamInstance.teamName}", ${TeamInstance.wins}, ${TeamInstance.losses});\n`;
+    });
+    return teamInsertionCode;
+}
+function allPlayerInsertionCode(){
+    let playerInsertionCode = "";
+    PlayerArray.forEach(PlayerInstance => {
+        playerInsertionCode += `INSERT INTO player VALUES (${PlayerInstance.playerID}, "${PlayerInstance.playerName}", "${PlayerInstance.dob}", ${PlayerInstance.teamID}, "${PlayerInstance.teamJoinDate}");\n`;
+    });
+    return playerInsertionCode;
+}
+function allManagerInsertionCode(){
+    let managerInsertionCode = "";
+    ManagerArray.forEach(ManagerInstance => {
+        managerInsertionCode += `INSERT INTO manager VALUES (${ManagerInstance.managerID}, "${ManagerInstance.managerName}", ${ManagerInstance.teamID}, "${ManagerInstance.teamJoinDate}");\n`;
+    });
+    return managerInsertionCode;
+}
+function allStadiumInsertionCode(){
+    let stadiumInsertionCode = "";
+    StadiumArray.forEach(StadiumInstance => {
+        stadiumInsertionCode += `INSERT INTO stadium VALUES (${StadiumInstance.stadiumID}, ${StadiumInstance.capacity}, "${StadiumInstance.stadiumName}", ${StadiumInstance.homeTeamID});\n`;
+    });
+    return stadiumInsertionCode;
+}
+function allMatchInsertionCode(){
+    let matchInsertionCode = "";
+    MatchArray.forEach(MatchInstance => {
+        matchInsertionCode += `INSERT INTO match VALUES (${MatchInstance.matchID}, ${MatchInstance.team1Score}, ${MatchInstance.team2Score}, ${MatchInstance.attendance}, ${MatchInstance.stadiumID}, ${MatchInstance.winnerID}, ${MatchInstance.loserID});\n`;
+    });
+    return matchInsertionCode;
+}
+function allGoalInsertionCode(){
+    let goalInsertionCode = "";
+    GoalArray.forEach(GoalInstance => {
+        goalInsertionCode += `INSERT INTO goal VALUES (${GoalInstance.goalID}, "${GoalInstance.goalType}", ${GoalInstance.goalTime}, ${GoalInstance.scoringPlayerID}, ${GoalInstance.matchID});\n`;
+    });
+    return goalInsertionCode;
+}
+
+// console.log(allTeamInsertionCode());
+// console.log("-----------------------------------------------------------------------");
+// console.log(allPlayerInsertionCode());
+// console.log("-----------------------------------------------------------------------");
+// console.log(allManagerInsertionCode());
+// console.log("-----------------------------------------------------------------------");
+// console.log(allStadiumInsertionCode());
+// console.log("-----------------------------------------------------------------------");
+// console.log(allMatchInsertionCode());
+// console.log("-----------------------------------------------------------------------");
+// console.log(allGoalInsertionCode());
+
+function allSQLInsertionCode(){
+    let allInsertionCode = "";
+    allInsertionCode += allTeamInsertionCode();
+    allInsertionCode += allPlayerInsertionCode();
+    allInsertionCode += allManagerInsertionCode();
+    allInsertionCode += allStadiumInsertionCode();
+    allInsertionCode += allMatchInsertionCode();
+    allInsertionCode += allGoalInsertionCode();
+    return allInsertionCode;
+}
+
+fileSystem.writeFile("insertionCode.txt", allSQLInsertionCode(), (err) => {
+    if (err) throw err;
+    console.log("insertionCode.txt has been updated.");
+});
