@@ -139,7 +139,7 @@ INSERT INTO stadium VALUES (22, 36000, 'Providence Park', 22);
 INSERT INTO stadium VALUES (23, 35000, 'America First Field', 23);
 INSERT INTO stadium VALUES (24, 21000, 'PayPal Park', 24);
 INSERT INTO stadium VALUES (25, 32000, 'Lumen Field', 25);
-INSERT INTO stadium VALUES (26, 31000, 'Children's Mercy Park', 26);
+INSERT INTO stadium VALUES (26, 31000, 'Childrens Mercy Park', 26);
 INSERT INTO stadium VALUES (27, 34000, 'CityPark', 27);
 INSERT INTO stadium VALUES (28, 22000, 'BMO Field', 28);
 INSERT INTO stadium VALUES (29, 24000, 'BC Place', 29);
