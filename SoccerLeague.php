@@ -15,15 +15,20 @@
     <body style="background-image: url(pxfuel.jpg); color: white;">
         <h1 style = "text-align: center;"> Soccer League Database Management System</h1>
         <h2 style="text-align: center;"> By: Vincent Bercze, Kelvin Gu, Safwan Hossain</h2>
-
-
-        <?php
-        $username = 'your_username';
-        $password = 'your_password';
-        $connection_string = 'your_connection_string';
         
-        $conn = oci_connect($username, $password, $connection_string);
+        <?php        
+        require_once __DIR__ . '/vendor/autoload.php';
+        use Dotenv\Dotenv;
+        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
+
+        $oracleUsername = $_ENV['ORACLE_USERNAME'];
+        $oraclePassword = $_ENV['ORACLE_PASSWORD'];
+        $connection_string = '//oracle12c.scs.ryerson.ca:1521/orcl12c';
+        
+        $conn = oci_connect($oracleUsername, $oraclePassword, $connection_string);
         if (!$conn) {
+            echo "Connection failed";
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
             exit;
