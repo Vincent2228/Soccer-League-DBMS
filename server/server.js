@@ -227,4 +227,112 @@ app.post('/api/customQuery', async (req, res) => {
     }
 });
 
+app.delete('/api/teams/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM team WHERE team_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/players/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM player WHERE player_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/managers/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM manager WHERE manager_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/stadiums/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM stadium WHERE stadium_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/matches/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM match WHERE match_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/goals/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log(req.params)
+    try {
+      const connection = await oracledb.getConnection(connectionObject);
+      const result = await connection.execute(
+        `DELETE FROM goal WHERE goal_id = :id`,
+        { id },
+        { autoCommit: true }
+      );
+      await connection.close();
+      res.json({ message: 'Record deleted successfully' });
+      console.log("Record deleted successfully");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

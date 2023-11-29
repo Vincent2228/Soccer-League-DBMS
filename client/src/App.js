@@ -19,6 +19,24 @@ function App() {
   
   const [activeDataType, setActiveDataType] = useState('');
 
+  const dropTables = () => {
+    fetch('/api/dropTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  };
+
+  const createTables = () => {
+    fetch('/api/createTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  };
+
+  const populateTables = () => {
+    fetch('/api/populateTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  };
+
   const fetchTeams = () => {
     fetch('/api/teams')
       .then(response => response.json())
@@ -41,13 +59,13 @@ function App() {
     fetch('/api/managers')
     .then(response => response.json())
     .then(data => setManagers(data));
-  }
+  };
 
   const fetchMatches = () => {
     fetch('/api/matches')
     .then(response => response.json())
     .then(data => setMatches(data));
-  }
+  };
 
   const fetchStadiums = () => {
     fetch('/api/stadiums')
@@ -59,49 +77,31 @@ function App() {
     fetch('/api/DNE')
     .then(response => response.json())
     .then(data => setDNE(data));
-  }
-
-  const dropTables = () => {
-    fetch('/api/dropTables', { method: 'POST' })
-      .then(response => response.text())
-      .then(message => alert(message));
   };
-
-  const createTables = () => {
-    fetch('/api/createTables', { method: 'POST' })
-      .then(response => response.text())
-      .then(message => alert(message));
-  }
-
-  const populateTables = () => {
-    fetch('/api/populateTables', { method: 'POST' })
-      .then(response => response.text())
-      .then(message => alert(message));
-  } 
 
   const fetchSampleQuery1 = () => {
     fetch('/api/sampleQuery1')
       .then(response => response.json())
       .then(data => setSampleQuery1(data));
-  }
+  };
 
   const fetchSampleQuery2 = () => {
     fetch('/api/sampleQuery2')
       .then(response => response.json())
       .then(data => setSampleQuery2(data));
-  }
+  };
 
   const fetchSampleQuery3 = () => {
     fetch('/api/sampleQuery3')
       .then(response => response.json())
       .then(data => setSampleQuery3(data));
-  }
+  };
 
   const fetchSampleQuery4 = () => {
     fetch('/api/sampleQuery4')
       .then(response => response.json())
       .then(data => setSampleQuery4(data));
-  }
+  };
 
   const handleTableButtonClick = (dataType_Str) => {
     switch (dataType_Str) {
@@ -143,7 +143,7 @@ function App() {
     }
     setActiveDataType(dataType_Str);
   };
- 
+
   const handleQuerySubmit = (event) => {
     event.preventDefault();
     const query = event.target.query.value;
@@ -161,7 +161,11 @@ function App() {
         setActiveDataType('customQuery');
     })
     .catch(error => console.error('Error:', error));
-};
+  };  
+
+  const isMainTable = (dataType) => {
+    return ['teams', 'players', 'goals', 'managers', 'matches', 'stadiums'].includes(dataType);
+  };
 
   const renderTable = () => {
     let dataToRender = [];
@@ -210,6 +214,15 @@ function App() {
     }  
     // Dynamically render table headers and rows based of JSON object property names and # of json properties
     const columnHeaders = Object.keys(dataToRender[0]);
+
+    if (isMainTable(activeDataType)) {
+      return renderMainTable(dataToRender, columnHeaders);
+    } else {
+      return renderQueryResultTable(dataToRender, columnHeaders);
+    }    
+  };
+
+  const renderMainTable = (dataToRender, columnHeaders) => {
     return (
       <table>
         <thead>
@@ -225,18 +238,85 @@ function App() {
               {columnHeaders.map((header, colIndex) => (
                 <td key={colIndex}>{item[header]}</td>
               ))}
+              <td>
+              <button onClick={() => deleteRecord(item[columnHeaders[0]], columnHeaders[0], activeDataType)}>DELETE</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     );
-  };  
+  };
+
+  const renderQueryResultTable = (dataToRender, columnHeaders) => {
+    return (
+      <table>
+        <thead>
+          <tr>
+            {columnHeaders.map((header, index) => (
+              <th key={index}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dataToRender.map((item, rowIndex) => (
+            <tr key={rowIndex}>
+              {columnHeaders.map((header, colIndex) => (
+                <td key={colIndex}>{item[header]}</td>
+              ))}              
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  const deleteRecord = (idValue, idName, dataType) => {
+    fetch(`/api/${dataType}/${idValue}`, { method: 'DELETE' })
+      // .then(response => response.text())
+      // .then(message => alert(message))
+      .then(response => response.json())
+      .then(() => {
+        // Update the state to remove the deleted item
+        let updatedData;
+
+        switch (dataType) {
+          case 'teams':
+            updatedData = teams.filter(item => item[idName] !== idValue);
+            setTeams(updatedData);
+            break;
+          case 'players':
+            updatedData = players.filter(item => item[idName] !== idValue);
+            setPlayers(updatedData);
+            break; 
+          case 'goals':
+            updatedData = goals.filter(item => item[idName] !== idValue);
+            setGoals(updatedData);
+            break;
+          case 'managers':
+            updatedData = managers.filter(item => item[idName] !== idValue);
+            setManagers(updatedData);
+            break;
+          case 'matches':
+            updatedData = matches.filter(item => item[idName] !== idValue);
+            setMatches(updatedData);
+            break;
+          case 'stadiums':
+            updatedData = stadiums.filter(item => item[idName] !== idValue);
+            setStadiums(updatedData);
+            break;          
+          default:
+            break;
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+  
+  
+  
 
   return (
-    <div className="App">
-      <header>
-        <h1>Soccer League App</h1>
-      </header>
+    <div className="App">      
       <div className="buttonPanel">
         <button onClick={() => handleTableButtonClick('teams')}>Get Teams</button>
         <button onClick={() => handleTableButtonClick('players')}>Get Players</button>
