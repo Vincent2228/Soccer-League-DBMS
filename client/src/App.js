@@ -230,9 +230,19 @@ function App() {
             {columnHeaders.map((header, index) => (
               <th key={index}>{header}</th>
             ))}
-          </tr>
+          </tr>          
         </thead>
         <tbody>
+          <tr>
+            {columnHeaders.map((header, index) => (
+              <td key={`input-${index}`}>
+                <input type="text" name={`${header}-add`} />
+              </td>
+            ))}
+            <td>
+              <button onClick={handleAddRecord}>ADD</button>
+            </td>
+          </tr>
           {dataToRender.map((item, rowIndex) => (
             <tr key={rowIndex}>
               {columnHeaders.map((header, colIndex) => (
@@ -312,7 +322,9 @@ function App() {
       .catch(error => console.error('Error:', error));
   };
   
-  
+  const handleAddRecord = () => {
+    alert('Add record clicked');
+  };
   
 
   return (
