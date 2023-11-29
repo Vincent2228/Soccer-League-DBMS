@@ -9,8 +9,8 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f7f7f7; /* Light grey background */
-    border-right: 1px solid #ddd; /* Add a border between buttons and table */
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
 }
   
 .dataTable {
@@ -22,14 +22,14 @@ button {
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
 }
   
 button:hover {
-    background-color: #0056b3; /* Darken button on hover */
+    background-color: #0056b3;
 }
   
 table {
@@ -49,5 +49,5 @@ th {
 }
   
 tr:hover {
-    background-color: #f1f1f1; /* Highlight row on hover */
+    background-color: #f1f1f1;
 } 
