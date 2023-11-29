@@ -1,0 +1,124 @@
+.App {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+  
+.buttonPanel {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+}
+  
+.dataTable {
+    flex-grow: 1;
+    padding: 20px;
+}
+  
+button {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+  
+button:hover {
+    background-color: #0056b3;
+}
+
+.buttonPanelSecondary {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+    margin-top: 10px;
+}
+  
+.dropButton {
+    background-color: #dc3545;
+}
+
+.createButton {
+    background-color: #ffc107;
+}
+
+.populateButton {
+    background-color: #28a745;
+}
+
+.dropButton:hover,
+.createButton:hover,
+.populateButton:hover {
+    opacity: 0.8;
+}  
+
+.buttonPanelTertiary {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+    margin-top: 10px; /* Space below the second panel */
+}
+
+.sampleQuery1 { background-color: #9540d1; } /* Lightest Purple */
+.sampleQuery2 { background-color: #9540d1; } /* Light Purple */
+.sampleQuery3 { background-color: #8024c2; } /* Medium Purple */
+.sampleQuery4 { background-color: #6a0dad; } /* Darkest Purple */
+
+/* Style the form input and submit button */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+form input, form button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #4b0082; /* Indigo color for the submit button */
+    color: white;
+    cursor: pointer;
+}
+
+form button:hover {
+    opacity: 0.8;
+}
+
+.queryPanelContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+  }
+  
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+  
+th {
+    background-color: #007bff;
+    color: white;
+}
+  
+tr:hover {
+    background-color: #f1f1f1;
+}
