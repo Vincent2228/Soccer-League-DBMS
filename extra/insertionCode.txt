@@ -450,3 +450,4 @@ INSERT INTO goal VALUES (254, 'rebound', 28, 43, 50);
 INSERT INTO goal VALUES (255, 'rebound', 38, 44, 50);
 INSERT INTO goal VALUES (256, 'volley', 74, 43, 50);
 INSERT INTO goal VALUES (257, 'volley', 70, 21, 50);
+COMMIT;

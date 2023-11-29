@@ -1,0 +1,19 @@
+.App {
+    display: flex;
+}
+  
+.buttonPanel {
+    flex: 1;
+    /* Style as needed */
+}
+  
+.dataTable {
+    flex: 2;
+    /* Style as needed */
+}
+  
+table {
+    width: 100%;
+    /* Add more table styling here */
+}
+  
