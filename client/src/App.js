@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import './App.css';
 
 function App() {
  
@@ -8,7 +9,7 @@ function App() {
   const [managers, setManagers] = useState([]);
   const [matches, setMatches] = useState([]);
 
-  const [activeDataType, setActiveDataType] = useState(''); 
+  const [activeDataType, setActiveDataType] = useState('');
 
   const fetchTeams = () => {
     fetch('/api/teams')
@@ -62,7 +63,6 @@ function App() {
     }
     setActiveDataType(dataType_Str);
   };
-
 
   const renderTable = () => {
     switch (activeDataType) {
@@ -192,102 +192,29 @@ function App() {
           </table>
         );
       default:
-        return <div>Select a category to display data</div>;
+        return <div></div>;
     }
   };
   
 
   return (
-    <div className="App" style={{ display: 'flex' }}>
-      <h1>Soccer League App</h1>
+    <div className="App">
+      <header>
+        <h1>Soccer League App</h1>
+      </header>
 
-      <dev className="buttonPanel">
+      <div className="buttonPanel">
         <button onClick={() => handleButtonClick('teams')}>Get Teams</button>
         <button onClick={() => handleButtonClick('players')}>Get Players</button>
         <button onClick={() => handleButtonClick('goals')}>Get Goals</button>
         <button onClick={() => handleButtonClick('managers')}>Get Managers</button>
         <button onClick={() => handleButtonClick('matches')}>Get Matches</button>
-      </dev>
+      </div>
 
       <div className="dataTable">
         {renderTable()}
       </div>
-      
-      {/* <div>
-        <h2>Teams</h2>
-        <ul>
-          {teams.map((team, index) => (
-            <li key={index}>
-              <p>Team ID: {team[0]}</p>
-              <p>Team Name: {team[1]}</p>
-              <p>Wins: {team[2]}</p>
-              <p>Losses: {team[3]}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <div>
-        <h2>Players</h2>
-        <ul>
-          {players.map((player, index) => (
-            <li key={index}>
-              <p>Player ID: {player[0]}</p>
-              <p>Name: {player[1]}</p>
-              <p>Date of Birth: {player[2]}</p>
-              <p>Team ID: {player[3]}</p>
-              <p>Join Date: {player[4]}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <div>
-        <h2>Goals</h2>
-        <ul>
-          {goals.map((goal, index) => (
-            <li key={index}>
-              <p>Goal #{goal[0]}</p>
-              <p>Type: {goal[1]}</p>
-              <p>Time: {goal[2]}'</p>
-              <p>Scoring Player ID: {goal[3]}</p>
-              <p>Match ID: {goal[4]}</p>
-          </li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h2>Managers</h2>
-        <ul>
-          {managers.map((manager, index) => (
-            <li key={index}>
-              <p>Manager ID: {manager[0]}</p>
-              <p>Manager Name: {manager[1]}</p>
-              <p>Team ID: {manager[2]}</p>
-              <p>Join Date: {manager[3]}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h2>Matches</h2>
-        <ul>
-          {matches.map((match, index) => (
-            <li key={index}>
-              <p>Match ID: {match[0]}</p>
-              <p>Team1 Score: {match[1]}</p>
-              <p>Team2 Score: {match[2]}</p>
-              <p>Attendance: {match[3]}</p>
-              <p>Stadium ID: {match[4]}</p>
-              <p>Winner ID: {match[5]}</p>
-              <p>Loser ID: {match[6]}</p>
-            </li>
-          ))}
-        </ul>
-      </div> */}
-    </div>    
+    </div>
   );
 }
 

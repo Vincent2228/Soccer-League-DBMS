@@ -1,19 +1,53 @@
 .App {
     display: flex;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
 }
   
 .buttonPanel {
-    flex: 1;
-    /* Style as needed */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7; /* Light grey background */
+    border-right: 1px solid #ddd; /* Add a border between buttons and table */
 }
   
 .dataTable {
-    flex: 2;
-    /* Style as needed */
+    flex-grow: 1;
+    padding: 20px;
+}
+  
+button {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+  
+button:hover {
+    background-color: #0056b3; /* Darken button on hover */
 }
   
 table {
     width: 100%;
-    /* Add more table styling here */
+    border-collapse: collapse;
 }
   
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+  
+th {
+    background-color: #007bff;
+    color: white;
+}
+  
+tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
+} 
