@@ -13,7 +13,7 @@ function App() {
   const [sampleQuery2, setSampleQuery2] = useState([]);
   const [sampleQuery3, setSampleQuery3] = useState([]);
   const [sampleQuery4, setSampleQuery4] = useState([]);
-  const [inputtedQuery, setInputtedQuery] = useState('');
+  const [customQuery, setCustomQuery] = useState('');
 
   const [DNE, setDNE] = useState([]);
   
@@ -143,10 +143,25 @@ function App() {
     }
     setActiveDataType(dataType_Str);
   };
-
-  const handleQuerySubmit = (e) => {
-    alert('Query submitted');
-  };
+ 
+  const handleQuerySubmit = (event) => {
+    event.preventDefault();
+    const query = event.target.query.value;
+        
+    fetch('/api/customQuery', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: query })
+    })
+    .then(response => response.json())
+    .then(data => {
+        setCustomQuery(data);
+        setActiveDataType('customQuery');
+    })
+    .catch(error => console.error('Error:', error));
+};
 
   const renderTable = () => {
     let dataToRender = [];
@@ -183,7 +198,10 @@ function App() {
         break;
       case 'sampleQuery4':
         dataToRender = sampleQuery4;
-        break;        
+        break;
+      case 'customQuery':
+        dataToRender = customQuery;
+        break;
       default:
         return <div></div>;
     }  
