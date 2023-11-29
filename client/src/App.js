@@ -55,7 +55,25 @@ function App() {
     .then(data => setDNE(data));
   }
 
-  const handleButtonClick = (dataType_Str) => {
+  const dropTables = () => {
+    fetch('/api/dropTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  };
+
+  const createTables = () => {
+    fetch('/api/createTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  }
+
+  const populateTables = () => {
+    fetch('/api/populateTables', { method: 'POST' })
+      .then(response => response.text())
+      .then(message => alert(message));
+  }
+
+  const handleTableButtonClick = (dataType_Str) => {
     switch (dataType_Str) {
       case 'teams':
         fetchTeams();
@@ -136,7 +154,7 @@ function App() {
         </tbody>
       </table>
     );
-  };  
+  };
 
   return (
     <div className="App">
@@ -145,13 +163,18 @@ function App() {
       </header>
 
       <div className="buttonPanel">
-        <button onClick={() => handleButtonClick('teams')}>Get Teams</button>
-        <button onClick={() => handleButtonClick('players')}>Get Players</button>
-        <button onClick={() => handleButtonClick('goals')}>Get Goals</button>
-        <button onClick={() => handleButtonClick('managers')}>Get Managers</button>
-        <button onClick={() => handleButtonClick('matches')}>Get Matches</button>
-        <button onClick={() => handleButtonClick('stadiums')}>Get Stadiums</button>
-        <button onClick={() => handleButtonClick('dne')}>Get DNE</button>
+        <button onClick={() => handleTableButtonClick('teams')}>Get Teams</button>
+        <button onClick={() => handleTableButtonClick('players')}>Get Players</button>
+        <button onClick={() => handleTableButtonClick('goals')}>Get Goals</button>
+        <button onClick={() => handleTableButtonClick('managers')}>Get Managers</button>
+        <button onClick={() => handleTableButtonClick('matches')}>Get Matches</button>
+        <button onClick={() => handleTableButtonClick('stadiums')}>Get Stadiums</button>
+        <button onClick={() => handleTableButtonClick('dne')}>Get DNE</button>        
+      </div>
+      <div className="buttonPanelSecondary">
+        <button className="dropButton" onClick={() => dropTables()}>DROP Tables</button>
+        <button className="createButton" onClick={() => createTables()}>CREATE Tables</button>
+        <button className="populateButton" onClick={() => populateTables()}>POPULATE Tables</button>
       </div>
 
       <div className="dataTable">

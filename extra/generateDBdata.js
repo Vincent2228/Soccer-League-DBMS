@@ -276,42 +276,42 @@ simulate_n_matches(50);
 function allTeamInsertionCode(){
     let teamInsertionCode = "";
     TeamArray.forEach(TeamInstance => {
-        teamInsertionCode += `INSERT INTO team VALUES (${TeamInstance.teamID}, '${TeamInstance.teamName}', ${TeamInstance.wins}, ${TeamInstance.losses});\n`;
+        teamInsertionCode += `INSERT INTO team VALUES (${TeamInstance.teamID}, '${TeamInstance.teamName}', ${TeamInstance.wins}, ${TeamInstance.losses})\n`;
     });
     return teamInsertionCode;
 }
 function allPlayerInsertionCode(){
     let playerInsertionCode = "";
     PlayerArray.forEach(PlayerInstance => {
-        playerInsertionCode += `INSERT INTO player VALUES (${PlayerInstance.playerID}, '${PlayerInstance.playerName}', DATE '${PlayerInstance.dob}', ${PlayerInstance.teamID}, DATE '${PlayerInstance.teamJoinDate}');\n`;
+        playerInsertionCode += `INSERT INTO player VALUES (${PlayerInstance.playerID}, '${PlayerInstance.playerName}', DATE '${PlayerInstance.dob}', ${PlayerInstance.teamID}, DATE '${PlayerInstance.teamJoinDate}')\n`;
     });
     return playerInsertionCode;
 }
 function allManagerInsertionCode(){
     let managerInsertionCode = "";
     ManagerArray.forEach(ManagerInstance => {
-        managerInsertionCode += `INSERT INTO manager VALUES (${ManagerInstance.managerID}, '${ManagerInstance.managerName}', ${ManagerInstance.teamID}, DATE '${ManagerInstance.teamJoinDate}');\n`;
+        managerInsertionCode += `INSERT INTO manager VALUES (${ManagerInstance.managerID}, '${ManagerInstance.managerName}', ${ManagerInstance.teamID}, DATE '${ManagerInstance.teamJoinDate}')\n`;
     });
     return managerInsertionCode;
 }
 function allStadiumInsertionCode(){
     let stadiumInsertionCode = "";
     StadiumArray.forEach(StadiumInstance => {
-        stadiumInsertionCode += `INSERT INTO stadium VALUES (${StadiumInstance.stadiumID}, ${StadiumInstance.capacity}, '${StadiumInstance.stadiumName}', ${StadiumInstance.homeTeamID});\n`;
+        stadiumInsertionCode += `INSERT INTO stadium VALUES (${StadiumInstance.stadiumID}, ${StadiumInstance.capacity}, '${StadiumInstance.stadiumName}', ${StadiumInstance.homeTeamID})\n`;
     });
     return stadiumInsertionCode;
 }
 function allMatchInsertionCode(){
     let matchInsertionCode = "";
     MatchArray.forEach(MatchInstance => {
-        matchInsertionCode += `INSERT INTO match VALUES (${MatchInstance.matchID}, ${MatchInstance.team1Score}, ${MatchInstance.team2Score}, ${MatchInstance.attendance}, ${MatchInstance.stadiumID}, ${MatchInstance.winnerID}, ${MatchInstance.loserID});\n`;
+        matchInsertionCode += `INSERT INTO match VALUES (${MatchInstance.matchID}, ${MatchInstance.team1Score}, ${MatchInstance.team2Score}, ${MatchInstance.attendance}, ${MatchInstance.stadiumID}, ${MatchInstance.winnerID}, ${MatchInstance.loserID})\n`;
     });
     return matchInsertionCode;
 }
 function allGoalInsertionCode(){
     let goalInsertionCode = "";
     GoalArray.forEach(GoalInstance => {
-        goalInsertionCode += `INSERT INTO goal VALUES (${GoalInstance.goalID}, '${GoalInstance.goalType}', ${GoalInstance.goalTime}, ${GoalInstance.scoringPlayerID}, ${GoalInstance.matchID});\n`;
+        goalInsertionCode += `INSERT INTO goal VALUES (${GoalInstance.goalID}, '${GoalInstance.goalType}', ${GoalInstance.goalTime}, ${GoalInstance.scoringPlayerID}, ${GoalInstance.matchID})\n`;
     });
     return goalInsertionCode;
 }
@@ -335,7 +335,7 @@ function allSQLInsertionCode(){
     allInsertionCode += allManagerInsertionCode();
     allInsertionCode += allStadiumInsertionCode();
     allInsertionCode += allMatchInsertionCode();
-    allInsertionCode += allGoalInsertionCode();
+    allInsertionCode += allGoalInsertionCode();    
     return allInsertionCode;
 }
 

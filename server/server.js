@@ -1,6 +1,9 @@
 const express = require('express');
 const oracledb = require('oracledb');
 require("dotenv").config();
+const dropTables = require('./DropTables');
+const createTables = require('./CreateTables');
+const populateTables = require('./PopulateTables');
 
 const dbUsername = process.env.ORACLE_USERNAME;
 const dbPassword = process.env.ORACLE_PASSWORD;
@@ -139,6 +142,33 @@ app.get('/api/DNE', async (req, res) => {
         res.send(result.rows);
     } catch (error) {
         res.send([{Column1: 'Error', Column2: 'Error'}])
+    }
+});
+
+app.post('/api/dropTables', async (req, res) => {
+    try {
+        await dropTables();
+        res.send('All tables dropped successfully');
+    } catch (error) {
+        res.status(500).send('Error occurred while dropping tables');
+    }
+});
+
+app.post('/api/createTables', async (req, res) => {
+    try {
+        await createTables();
+        res.send('All tables created successfully');
+    } catch (error) {
+        res.status(500).send('Error occurred while creating tables');
+    }
+});
+
+app.post('/api/populateTables', async (req, res) => {
+    try {
+        await populateTables();
+        res.send('All tables populated successfully');
+    } catch (error) {
+        res.status(500).send('Error occurred while populating tables');
     }
 });
 

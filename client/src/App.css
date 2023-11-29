@@ -31,6 +31,34 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.buttonPanelSecondary {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+    margin-top: 10px; /* Adjust as needed to create space below the primary panel */
+  }
+  
+  .dropButton {
+    background-color: #dc3545; /* Red */
+  }
+  
+  .createButton {
+    background-color: #ffc107; /* Yellow */
+  }
+  
+  .populateButton {
+    background-color: #28a745; /* Green */
+  }
+  
+  .dropButton:hover,
+  .createButton:hover,
+  .populateButton:hover {
+    opacity: 0.8; /* A nice touch for hover effect */
+  }  
+
   
 table {
     width: 100%;
@@ -51,3 +79,4 @@ th {
 tr:hover {
     background-color: #f1f1f1;
 } 
+
