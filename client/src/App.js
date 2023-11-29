@@ -8,9 +8,15 @@ function App() {
   const [goals, setGoals] = useState([]);
   const [managers, setManagers] = useState([]);
   const [matches, setMatches] = useState([]);
-  const [stadiums, setStadiums] = useState([]);  
-  const [DNE, setDNE] = useState([]);
+  const [stadiums, setStadiums] = useState([]);
+  const [sampleQuery1, setSampleQuery1] = useState([]);
+  const [sampleQuery2, setSampleQuery2] = useState([]);
+  const [sampleQuery3, setSampleQuery3] = useState([]);
+  const [sampleQuery4, setSampleQuery4] = useState([]);
+  const [inputtedQuery, setInputtedQuery] = useState('');
 
+  const [DNE, setDNE] = useState([]);
+  
   const [activeDataType, setActiveDataType] = useState('');
 
   const fetchTeams = () => {
@@ -71,6 +77,30 @@ function App() {
     fetch('/api/populateTables', { method: 'POST' })
       .then(response => response.text())
       .then(message => alert(message));
+  } 
+
+  const fetchSampleQuery1 = () => {
+    fetch('/api/sampleQuery1')
+      .then(response => response.json())
+      .then(data => setSampleQuery1(data));
+  }
+
+  const fetchSampleQuery2 = () => {
+    fetch('/api/sampleQuery2')
+      .then(response => response.json())
+      .then(data => setSampleQuery2(data));
+  }
+
+  const fetchSampleQuery3 = () => {
+    fetch('/api/sampleQuery3')
+      .then(response => response.json())
+      .then(data => setSampleQuery3(data));
+  }
+
+  const fetchSampleQuery4 = () => {
+    fetch('/api/sampleQuery4')
+      .then(response => response.json())
+      .then(data => setSampleQuery4(data));
   }
 
   const handleTableButtonClick = (dataType_Str) => {
@@ -96,10 +126,26 @@ function App() {
       case 'dne':
         fetchDNE();
         break;
+      case 'sampleQuery1':
+        fetchSampleQuery1();
+        break;
+      case 'sampleQuery2':
+        fetchSampleQuery2();
+        break;
+      case 'sampleQuery3':
+        fetchSampleQuery3();
+        break;
+      case 'sampleQuery4':
+        fetchSampleQuery4();
+        break;
       default:
         break;      
     }
     setActiveDataType(dataType_Str);
+  };
+
+  const handleQuerySubmit = (e) => {
+    alert('Query submitted');
   };
 
   const renderTable = () => {
@@ -126,6 +172,18 @@ function App() {
       case 'dne':
         dataToRender = DNE;
         break;
+      case 'sampleQuery1':
+        dataToRender = sampleQuery1;
+        break;
+      case 'sampleQuery2':
+        dataToRender = sampleQuery2;
+        break;
+      case 'sampleQuery3':
+        dataToRender = sampleQuery3;
+        break;
+      case 'sampleQuery4':
+        dataToRender = sampleQuery4;
+        break;        
       default:
         return <div></div>;
     }  
@@ -154,14 +212,13 @@ function App() {
         </tbody>
       </table>
     );
-  };
+  };  
 
   return (
     <div className="App">
       <header>
         <h1>Soccer League App</h1>
       </header>
-
       <div className="buttonPanel">
         <button onClick={() => handleTableButtonClick('teams')}>Get Teams</button>
         <button onClick={() => handleTableButtonClick('players')}>Get Players</button>
@@ -174,7 +231,19 @@ function App() {
       <div className="buttonPanelSecondary">
         <button className="dropButton" onClick={() => dropTables()}>DROP Tables</button>
         <button className="createButton" onClick={() => createTables()}>CREATE Tables</button>
-        <button className="populateButton" onClick={() => populateTables()}>POPULATE Tables</button>
+        <button className="populateButton" onClick={() => populateTables()}>POPULATE Tables</button>        
+      </div>
+      <div className="queryPanelContainer">
+        <div className="buttonPanelTertiary">
+          <button className="sampleQuery1" onClick={() => handleTableButtonClick('sampleQuery1')}>Sample Query 1</button>
+          <button className="sampleQuery2" onClick={() => handleTableButtonClick('sampleQuery2')}>Sample Query 2</button>
+          <button className="sampleQuery3" onClick={() => handleTableButtonClick('sampleQuery3')}>Sample Query 3</button>
+          <button className="sampleQuery4" onClick={() => handleTableButtonClick('sampleQuery4')}>Sample Query 4</button>
+        </div>
+        <form onSubmit={handleQuerySubmit} className="queryForm">
+          <input type="text" name="query" placeholder="Enter your query" />
+          <button type="submit">Submit Query</button>
+        </form>
       </div>
 
       <div className="dataTable">

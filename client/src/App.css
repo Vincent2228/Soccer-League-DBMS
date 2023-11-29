@@ -38,27 +38,70 @@ button:hover {
     padding: 20px;
     background-color: #f7f7f7;
     border-right: 1px solid #ddd;
-    margin-top: 10px; /* Adjust as needed to create space below the primary panel */
-  }
+    margin-top: 10px;
+}
   
-  .dropButton {
-    background-color: #dc3545; /* Red */
-  }
-  
-  .createButton {
-    background-color: #ffc107; /* Yellow */
-  }
-  
-  .populateButton {
-    background-color: #28a745; /* Green */
-  }
-  
-  .dropButton:hover,
-  .createButton:hover,
-  .populateButton:hover {
-    opacity: 0.8; /* A nice touch for hover effect */
-  }  
+.dropButton {
+    background-color: #dc3545;
+}
 
+.createButton {
+    background-color: #ffc107;
+}
+
+.populateButton {
+    background-color: #28a745;
+}
+
+.dropButton:hover,
+.createButton:hover,
+.populateButton:hover {
+    opacity: 0.8;
+}  
+
+.buttonPanelTertiary {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+    margin-top: 10px; /* Space below the second panel */
+}
+
+.sampleQuery1 { background-color: #9540d1; } /* Lightest Purple */
+.sampleQuery2 { background-color: #9540d1; } /* Light Purple */
+.sampleQuery3 { background-color: #8024c2; } /* Medium Purple */
+.sampleQuery4 { background-color: #6a0dad; } /* Darkest Purple */
+
+/* Style the form input and submit button */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+form input, form button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #4b0082; /* Indigo color for the submit button */
+    color: white;
+    cursor: pointer;
+}
+
+form button:hover {
+    opacity: 0.8;
+}
+
+.queryPanelContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+  }
   
 table {
     width: 100%;
@@ -78,5 +121,4 @@ th {
   
 tr:hover {
     background-color: #f1f1f1;
-} 
-
+}

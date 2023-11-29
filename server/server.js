@@ -145,6 +145,72 @@ app.get('/api/DNE', async (req, res) => {
     }
 });
 
+
+function transformOracleResultToJSON(oracleResult) {
+    const columns = oracleResult.metaData.map(col => col.name);
+    const transformedRows = oracleResult.rows.map(row => {
+        let rowObject = {};
+        row.forEach((value, index) => {
+            rowObject[columns[index]] = value;
+        });
+        return rowObject;
+    });
+    return transformedRows;
+}
+
+
+app.get('/api/sampleQuery1', async (req, res) => {
+    try {
+        const connection = await oracledb.getConnection(connectionObject);
+        const result = await connection.execute('SELECT * FROM team WHERE wins > 2');
+        await connection.close();
+        
+        const transformedResult = transformOracleResultToJSON(result);
+        res.json(transformedResult);
+    } catch (error) {
+        res.send([{Column1: 'Error', Column2: 'Error'}]);
+    }
+});
+
+app.get('/api/sampleQuery2', async (req, res) => {
+    try {
+        const connection = await oracledb.getConnection(connectionObject);
+        const result = await connection.execute('SELECT p.player_name, COUNT(DISTINCT g.match_id) AS match_count, COUNT(g.goal_id) AS goal_count FROM player p JOIN goal g ON p.player_id = g.scoring_player_id GROUP BY p.player_name ORDER BY goal_count DESC');
+        await connection.close();
+        
+        const transformedResult = transformOracleResultToJSON(result);
+        res.json(transformedResult);
+    } catch (error) {
+        res.send([{Column1: 'Error', Column2: 'Error'}]);
+    }
+});
+
+app.get('/api/sampleQuery3', async (req, res) => {
+    try {
+        const connection = await oracledb.getConnection(connectionObject);
+        const result = await connection.execute('SELECT t.team_name, t.wins, t.losses, (t.wins + t.losses) AS total_matches FROM team t');
+        await connection.close();
+        
+        const transformedResult = transformOracleResultToJSON(result);
+        res.json(transformedResult);
+    } catch (error) {
+        res.send([{Column1: 'Error', Column2: 'Error'}]);
+    }
+});
+
+app.get('/api/sampleQuery4', async (req, res) => {
+    try {
+        const connection = await oracledb.getConnection(connectionObject);
+        const result = await connection.execute('SELECT m.match_id, t1.team_name AS team1, t2.team_name AS team2, m.team1_score, m.team2_score, s.stadium_name, m.attendance FROM match m JOIN team t1 ON m.winner_id = t1.team_id JOIN team t2 ON m.loser_id = t2.team_id JOIN stadium s ON m.stadium_id = s.stadium_id ORDER BY m.attendance DESC');
+        await connection.close();
+        
+        const transformedResult = transformOracleResultToJSON(result);
+        res.json(transformedResult);
+    } catch (error) {
+        res.send([{Column1: 'Error', Column2: 'Error'}]);
+    }
+});
+
 app.post('/api/dropTables', async (req, res) => {
     try {
         await dropTables();
